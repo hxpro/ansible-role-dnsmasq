@@ -1,0 +1,11 @@
+---
+- name: Install dnsmasq
+  package:
+    name: dnsmasq
+    state: installed
+
+- name: Run/enable dnsmasq service
+  systemd:
+    name: dnsmasq
+    enabled: yes
+    state: started
