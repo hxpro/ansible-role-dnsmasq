@@ -4,6 +4,37 @@
     name: dnsmasq
     state: installed
 
+- name: Include configuration files in /etc/dnsmasq.d
+  lineinfile:
+    path: /etc/dnsmasq.conf
+    line: "{{ item }}"
+  with_items:
+    - "conf-dir=/etc/dnsmasq.d"
+    - "log-queries"
+    - "log-facility=/var/log/dnsmasq.log"
+  notify: restart dnsmasq
+
+- name: Hosts file
+  template:
+    src: hosts.j2
+    dest: "/etc/{{ zone.name }}.hosts"
+  with_items: "{{ dnsmasq_zone }}"
+  when: dnsmasq_zone is defined
+  loop_control:
+    loop_var: zone
+  notify: restart dnsmasq
+
+
+- name: Zone configs
+  template:
+    src: zone.conf.j2
+    dest: "/etc/dnsmasq.d/{{ zone.name }}.conf"
+  with_items: "{{ dnsmasq_zone }}"
+  when: dnsmasq_zone is defined
+  loop_control:
+    loop_var: zone
+  notify: restart dnsmasq
+
 - name: Run/enable dnsmasq service
   systemd:
     name: dnsmasq

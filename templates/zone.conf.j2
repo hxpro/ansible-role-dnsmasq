@@ -1,0 +1,10 @@
+addn-hosts=/etc/{{ zone.name }}.hosts
+{% for record in zone.records %}
+{% if record.type=='A' %}
+# address=/{{ record.name }}.{{ zone.name }}/{{ record.value }}
+{% elif record.type=='TXT' %}
+txt-record={{ record.name }}{% if record.name %}.{% endif %}{{ zone.name }},"{{ record.value }}"
+{% elif record.type=='CNAME' %}
+cname={{ record.name }}{% if record.name %}.{% endif %}{{ zone.name }},{{ record.value }}
+{% endif %}
+{% endfor %}

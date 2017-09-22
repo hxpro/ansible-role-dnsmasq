@@ -12,6 +12,26 @@ Requirements
 Role Variables
 --------------
 
+    dnsmasq_zone:
+      - name: example.com
+        records:
+          - name: www
+            type: A
+            value: 192.168.1.20
+          - name: mx
+            type: MX
+            value: 192.168.1.21
+          - name:
+            type: TXT
+            value: 'v=spf1 a mx ~all'
+      - name: example.net
+        records:
+          - name: web
+            type: A
+            value: 192.168.1.20
+          - name: mx
+            type: MX
+            value: 192.168.1.21
 
 Dependencies
 ------------
