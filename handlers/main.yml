@@ -1,5 +1,10 @@
 ---
-- name: restart dnsmasq
+- name: check dnsmasq syntax
+  command: dnsmasq --test
+  listen: restart dnsmasq
+
+- name: systemd restart dnsmasq
   systemd:
     name: dnsmasq
     state: restarted
+  listen: restart dnsmasq
